@@ -1,6 +1,3 @@
-x = 1;
-
-$AGGN(G; m, v)
-zh_t_2064 = zh_G_2064;
-$AGGN(G1; m, v)
-zh_t_6599 = zh_G1_6599;
+$expa (ABA; m, v)
+$expa (B; m, v)
+zh_t_6599 = zh_ABA_6599;

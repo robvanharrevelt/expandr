@@ -2,10 +2,24 @@ library(expandr)
 
 load("examples/data.Rdata")
 
-code <- expansions({
-    "@aggr"(G = c("m", "v"))
-    zh_t_2064 <- "{zh_G_2064}"
-    "@aggr"(G1 = c("m", "v"))
-    zh_t_6599 <- "{zh_G1_6599}"
+expa <- expansions({
+    "@aggr"(B = c("m", "v"))
+    zh_t_2064 <- "{zh_B_2064}"
+    "@aggr"(ABA = c("m", "v"))
+    zh_t_6599 <- "{zh_ABA_6599}"
 })
-print(code)
+print(expa)
+
+
+expa <- expansions({
+    "@aggr"(B = c("m", "v"))
+    zh_t_2064 <- "{a}"
+})
+print(expa)
+
+expa <- expansions({
+    "@expa"(L = c("0004", "0509", "1014"))
+    "@aggr"(S = c("m", "v"))
+    bv__t_L <- "{bv__S_L}"
+})
+print(expa)

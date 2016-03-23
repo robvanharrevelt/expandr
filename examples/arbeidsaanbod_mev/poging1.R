@@ -9,7 +9,6 @@ lees_input <- function(filenaam) {
     input <- fread(filenaam, data.table = FALSE)
     rownames(input) <- input[[1]]
     input <- input[-1]
-    input <- as.data.frame(t(input))
     rownames(input) <- sub(rownames(input), pattern = "Y", replacement = "")
     return (input)
 }

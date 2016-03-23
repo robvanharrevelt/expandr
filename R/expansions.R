@@ -4,7 +4,10 @@ expand_expression <- function(expr, expa_list) {
     expressions <- expr
     for (pattern in names(expa_list)) {
 
-        # TODO: if pattern not in expression, then do not do anything
+        if (length(grep(pattern, expressions)) == 0) {
+            # pattern not in expressions: do not do anything
+            next
+        }
         expressions <- lapply(expressions, FUN = str_replace_all, pattern = pattern,
                               replacement = expa_list[[pattern]])
 
