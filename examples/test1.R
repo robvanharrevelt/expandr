@@ -1,29 +1,29 @@
-library(presim)
+library(expandr)
 
 load("examples/data.Rdata")
 
 z <- 888
-code <- presim({
-    "$expa"(G = c("m", "v"))
+expa <- expansions({
+    "@expa"(G = c("m", "v"))
     zh_G_2064 <- z
 })
-print(code)
+print(expa)
 
 print(df)
 
-df2 <- withi?n(df, {
-    evaluate_presim(code)
+df2 <- within(df, {
+    eval_expa(expa)
 })
 print(df2)
 
-df3 <- evaluate_presim_within(code, df)
+df3 <- eval_expa_within(expa, df)
 print(df3)
 
-code <- presim({
+expa <- expansions({
     "@expa"(G = c("m", "v"))
     df4["2011", "zh_G_2064"] <- 888
 })
-print(code)
+print(expa)
 df4 <- df
-x <- evaluate_presim(code)
+x <- eval_expa(expa)
 print(df4)

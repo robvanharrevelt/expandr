@@ -1,10 +1,10 @@
-library(presim)
+library(expandr)
 
 load("examples/data.Rdata")
 
-code <- presim({
-    "$EXPA"$G = c("m", "v")
-    "$EXPA"$PROV = c("nh", "zh")
+code <- expansions({
+    "@expa"(G = c("m", "v"))
+    "@expa"(PROV = c("nh", "zh"))
     PROV_G_2064 <- 888
 })
 print(code)
