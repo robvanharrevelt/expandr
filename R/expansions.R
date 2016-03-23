@@ -33,7 +33,7 @@ get_summation <- function(x, aggn_list) {
 perform_aggregation <- function(expr, aggn_list) {
 
     # TODO: the code cannot handle multi-dimensional aggregations yet
-    matches <- str_match_all(expr, pattern  = "\"@(.+?)@\"")
+    matches <- str_match_all(expr, pattern  = "\"\\{(.+?)\\}\"")
 
     # TODO: if no match, then return and keep exp unchanged
     groups <- matches[[1]][, 2]
@@ -48,7 +48,7 @@ perform_aggregation <- function(expr, aggn_list) {
 
     pattern_list <- replacements
 
-    names(pattern_list) <- paste0("\"@", patterns, "@\"")
+    names(pattern_list) <- paste0("\"\\{", patterns, "\\}\"")
 
     expr <- str_replace_all(expr, pattern_list)
     return (expr)
