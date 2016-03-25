@@ -1,7 +1,5 @@
 library(expandr)
 
-load("examples/data.Rdata")
-
 expa <- expansions({
     "@aggr"(B = c("m", "v"))
     "@aggr"(C = c("nh", "zh"))

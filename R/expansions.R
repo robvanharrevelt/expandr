@@ -1,4 +1,10 @@
 #' @import stringr
+#'
+#
+# TODO: when the aggr or expa symbols partially overlap (for example A and BAB),
+# then the longest symbol should be evaluated first. The symbols should be
+# evaluated in the order of the length of the symbols.
+#'
 
 expand_expression <- function(expr, expa_list) {
     expressions <- expr
@@ -22,7 +28,7 @@ expand_expression <- function(expr, expa_list) {
 # returns a valid pattern(s) for regular expressions for a normal
 # character vector x by escaping characters when necessary
 create_pattern <- function(x) {
-    return(str_replace_all(x, pattern = "([({)}+*])", replacement = "\\\\\\1"))
+    return(str_replace_all(x, pattern = "([({)}+*\\[\\]\\\\])", replacement = "\\\\\\1"))
 }
 
 get_summation <- function(x, aggn_list) {
@@ -37,6 +43,8 @@ perform_aggregation <- function(expr, aggn_list) {
         return (expr)
     }
     patterns <- create_pattern(groups)
+    print(groups)
+    print(patterns)
     replacements <- lapply(groups, FUN = get_summation, aggn_list = aggn_list)
     replacements <- as.character(replacements)
     pattern_list <- replacements
