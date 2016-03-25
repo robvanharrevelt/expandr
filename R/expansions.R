@@ -28,7 +28,8 @@ expand_expression <- function(expr, expa_list) {
 # returns a valid pattern(s) for regular expressions for a normal
 # character vector x by escaping characters when necessary
 create_pattern <- function(x) {
-    return(str_replace_all(x, pattern = "([({)}+*\\[\\]\\\\])", replacement = "\\\\\\1"))
+    return(str_replace_all(x, pattern = "([({)}+*\\[\\]\\\\])",
+                           replacement = "\\\\\\1"))
 }
 
 get_summation <- function(x, aggn_list) {
@@ -43,10 +44,8 @@ perform_aggregation <- function(expr, aggn_list) {
         return (expr)
     }
     patterns <- create_pattern(groups)
-    print(groups)
-    print(patterns)
     replacements <- lapply(groups, FUN = get_summation, aggn_list = aggn_list)
-    replacements <- as.character(replacements)
+    replacements <- paste0("(", as.character(replacements), ")")
     pattern_list <- replacements
     names(pattern_list) <- paste0("\"\\{", patterns, "\\}\"")
     expr <- str_replace_all(expr, pattern_list)
