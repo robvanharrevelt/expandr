@@ -4,12 +4,12 @@
 \alias{eval_expa_within}
 \title{Evaluate expansions in the environment of a dataframe or list}
 \usage{
-eval_expa_within(code, x)
+eval_expa_within(expa, data)
 }
 \arguments{
-\item{an}{<code>expansions</code> object}
+\item{expa}{an <code>expansions</code> object}
 
-\item{within}{dataframe or list within which the expanded expressions are
+\item{data}{dataframe or list within which the expanded expressions are
 executed}
 }
 \description{

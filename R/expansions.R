@@ -1,11 +1,7 @@
-#' @import stringr
-#'
-#
 # TODO: when the aggr or expa symbols partially overlap (for example A and BAB),
 # then the longest symbol should be evaluated first. The symbols should be
-# evaluated in the order of the length of the symbols.
-#'
-
+# evaluated in the order of the length of the symbols
+#' @importFrom stringr str_replace_all
 expand_expression <- function(expr, expa_list) {
     expressions <- expr
     for (pattern in names(expa_list)) {
@@ -37,6 +33,7 @@ get_summation <- function(x, aggn_list) {
     return(paste(x, collapse = " + "))
 }
 
+#' @importFrom stringr str_match_all
 perform_aggregation <- function(expr, aggn_list) {
     matches <- str_match_all(expr, pattern  = "\"\\{(.+?)\\}\"")
     groups <- matches[[1]][, 2]
@@ -110,7 +107,7 @@ expansions <- function(x) {
 }
 
 #' @export
-print.expansions <- function(x) {
+print.expansions <- function(x, ...) {
     cat("S3 class expansions\n")
     cat(paste(x, collapse = "\n"))
     cat("\n")

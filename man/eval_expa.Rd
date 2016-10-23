@@ -4,10 +4,10 @@
 \alias{eval_expa}
 \title{Evaluate expansions in the parent environment}
 \usage{
-eval_expa(code)
+eval_expa(expa)
 }
 \arguments{
-\item{an}{<code>expansions</code> object}
+\item{expa}{an <code>expansions</code> object}
 }
 \description{
 Evaluate expansions in the parent environment

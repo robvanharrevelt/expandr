@@ -4,7 +4,7 @@
 \alias{expansions}
 \title{Expand R expressions with and without aggregation}
 \usage{
-expansions(expr)
+expansions(x)
 }
 \arguments{
 \item{x}{one or more R-expressions}
