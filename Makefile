@@ -1,4 +1,6 @@
-# This is a gnu makefile
+# This is a gnu makefile.
+# On Windows, be sure to use a general GnuWin make and not the make
+# of Rtools
 PKGDIR=pkg
 VIEWER=gvim
 OSNAME := $(shell uname | tr A-Z a-z)
@@ -8,7 +10,6 @@ INSTALL_FLAGS=--no-multiarch --with-keep.source
 PKG=$(shell grep 'Package:' $(PKGDIR)/DESCRIPTION  | cut -d " " -f 2)
 PKGTAR=$(PKG)_$(shell grep 'Version' $(PKGDIR)/DESCRIPTION  | cut -d " " -f 2).tar.gz
 PKGDATE=$(shell grep 'Date' $(PKGDIR)/DESCRIPTION  | cut -d " " -f 2)
-PKGINST=$(shell Rscript -e 'packageDescription("regts",fields="Date")' | cut -d " " -f 2)
 TODAY=$(shell date "+%Y-%m-%d")
 
 .PHONY: clean cleanx check install uninstall mkpkg bin pdf
@@ -48,7 +49,6 @@ flags:
 	@echo "PKG=$(PKG)"
 	@echo "PKGTAR=$(PKGTAR)"
 	@echo "PKGDATE=$(PKGDATE)"
-	@echo "PKGINST=$(PKGINST)"
 	@echo "R .libPaths()"
 	@echo "FC=$(FC)"
 	@echo "F77=$(F77)"
@@ -70,7 +70,6 @@ check: cleanx
 	@rm -f  $(PKGTAR)
 	@echo "Today                           : $(TODAY)"
 	@echo "Checked package description date: $(PKGDATE)"
-	@echo "Installed version date          : $(PKGINST)"
 # 	@Rscript -e 'cat("Installed version date          :",packageDescription("nleqslv", fields="Date"))'
 	@echo ""
 
@@ -89,7 +88,6 @@ mkpkg: cleanx syntax
 	@cp -nv $(PKGTAR) archive
 	@echo "Today                           : $(TODAY)"
 	@echo "Checked package description date: $(PKGDATE)"
-	@echo "Installed version date          : $(PKGINST)"
 # 	@Rscript -e 'cat("Installed version date          :",packageDescription("nleqslv", fields="Date"))'
 	@echo ""
 
@@ -101,7 +99,7 @@ pdf:
 	R CMD Rd2pdf --batch $(PKGDIR) 2>$(PKG).log
 
 install:
-	R CMD INSTALL $(PKGDIR)
+	R CMD INSTALL $(INSTALL_FLAGS) $(PKGDIR)
 
 uninstall:
 	R CMD REMOVE $(PKG)
