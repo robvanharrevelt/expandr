@@ -9,6 +9,6 @@ test_that("expa and aggn", {
         PROV_t_2064 <- "{sqrt(PROV_G_2064)}"
     })
     expect_equal(as.character(expa),
-                 c("zh_t_2064 <- (sqrt(zh_m_2064) + sqrt(zh_v_2064))",
+                 c("zh_t_2064a <- (sqrt(zh_m_2064) + sqrt(zh_v_2064))",
                    "nh_t_2064 <- (sqrt(nh_m_2064) + sqrt(nh_v_2064))"))
 })
