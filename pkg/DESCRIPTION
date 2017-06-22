@@ -7,14 +7,12 @@ Authors@R: c(
  person("Rob", "van Harrevelt", email = "rvanharrevelt@gmail.com", role = c("aut", "cre")),
  person("Anita", "van der Roest", email = "J.C.van.der.Roest@cpb.nl",role = "aut")
  )
-Author: Rob van Harrevelt [aut, cre],
-   Anita van der Roest [aut]
-Author: Who wrote it
+Author: Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
 Description: This package can be used to expand R expressions.
    It is an R equivalent of the program Presim.
-License:  GPL-3
+License: GPL-3
 LazyData: TRUE
-RoxygenNote: 5.0.1
-Depends: stringr
+RoxygenNote: 6.0.1
+Imports: stringr, regts
 Suggests: testthat

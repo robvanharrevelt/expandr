@@ -12,4 +12,3 @@ expansions(x)
 \description{
 Expand R expressions with and without aggregation
 }
-

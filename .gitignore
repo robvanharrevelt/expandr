@@ -5,3 +5,5 @@
 *.Rcheck
 tmp
 *.log
+pkg.pdf
+expandr_*tar.gz

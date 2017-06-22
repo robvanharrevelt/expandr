@@ -2,17 +2,19 @@
 % Please edit documentation in R/expansions.R
 \name{eval_expa_within}
 \alias{eval_expa_within}
-\title{Evaluate expansions in the environment of a dataframe or list}
+\title{Evaluate expansions in the environment of a dataframe, list,
+or timeseries object.}
 \usage{
 eval_expa_within(expa, data)
 }
 \arguments{
-\item{expa}{an <code>expansions</code> object}
+\item{expa}{an \code{\link{expansions}} object}
 
-\item{data}{dataframe or list within which the expanded expressions are
-executed}
+\item{data}{dataframe, list, \code{\link[stats]{ts}} or
+\code{\link[regts]{regts}} within which the expanded expressions are
+ executed}
 }
 \description{
-Evaluate expansions in the environment of a dataframe or list
+Evaluate expansions in the environment of a dataframe, list,
+or timeseries object.
 }
-

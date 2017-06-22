@@ -1,8 +1,7 @@
 library(data.table)
 library(expandr)
 
-input_csv <- "examples/arbeidsaanbod_mev/arbeidsaanbod.csv"
-rea_l_ebb <- 2014
+input_csv <- "arbeidsaanbod.csv"
 
 # Lees alle tijdreeksen van de input csv
 lees_input <- function(filenaam) {

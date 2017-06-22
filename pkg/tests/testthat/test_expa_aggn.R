@@ -1,4 +1,6 @@
 library(expandr)
+library(testthat)
+library(regts)
 
 context("Simple expa and aggn examples")
 

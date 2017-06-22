@@ -26,6 +26,7 @@ help:
 	@echo "   bin     - builds binary package in ./tmp"
 	@echo "   install   - install package in .libPaths()[1]"
 	@echo "   uninstall - uninstall package from .libPaths()[1]"
+	@echo "   document  - run roxygen to generate Rd files and make pdf Reference manual"
 	@echo "   clean     - cleans up everything"
 	@echo "   flags     - display R config flags and some macros"
 
@@ -95,8 +96,10 @@ bin: install_deps
 	mkdir tmp
 	R CMD INSTALL -l ./tmp --build $(PKGDIR)
 
-pdf:
-	R CMD Rd2pdf --batch $(PKGDIR) 2>$(PKG).log
+document: install_deps
+	-@rm -f $(PKGDIR).pdf
+	R -e "roxygen2::update_collate('"$(PKGDIR)"'); devtools::document('"$(PKGDIR)"')"
+	R CMD Rd2pdf --batch $(PKGDIR) 2>$(PKGDIR).log
 
 install: install_deps
 	R CMD INSTALL $(INSTALL_FLAGS) $(PKGDIR)
