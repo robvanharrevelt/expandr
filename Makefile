@@ -5,6 +5,7 @@ PKGDIR=pkg
 VIEWER=gvim
 OSNAME := $(shell uname | tr A-Z a-z)
 INSTALL_FLAGS=--no-multiarch --with-keep.source 
+RCHECKARG=--no-multiarch
 
 # Package name, Version and date from DESCIPTION
 PKG=$(shell grep 'Package:' $(PKGDIR)/DESCRIPTION  | cut -d " " -f 2)
@@ -75,10 +76,13 @@ check: cleanx
 	@echo ""
 
 cleanx:
+ifneq ($(findstring windows, $(OSNAME)), windows)
 # Apple Finder rubbish
 	@find . -name '.DS_Store' -delete
 	@rm -f $(PKGTAR)
 	@rm -fr $(PKG).Rcheck
+endif
+
 
 # build date of package must be at least today
 # build source package for submission to CRAN
