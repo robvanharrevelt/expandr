@@ -94,7 +94,7 @@ mkpkg: cleanx syntax install_deps
 
 bin: install_deps
 	mkdir tmp
-	R CMD INSTALL -l ./tmp --build $(PKGDIR)
+	R CMD INSTALL $(INSTALL_FLAGS) -l ./tmp --build $(PKGDIR)
 
 document: install_deps
 	-@rm -f $(PKGDIR).pdf
