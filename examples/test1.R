@@ -4,7 +4,7 @@ load("examples/data.Rdata")
 
 z <- 888
 expa <- expansions({
-    "@expa"(G = c("m", "v"))
+    expa(G = c("m", "v"))
     zh_G_2064 <- z
 })
 print(expa)
@@ -20,7 +20,7 @@ df3 <- eval_expa_within(expa, df)
 print(df3)
 
 expa <- expansions({
-    "@expa"(G = c("m", "v"))
+    expa(G = c("m", "v"))
     df4["2011", "zh_G_2064"] <- 888
 })
 print(expa)

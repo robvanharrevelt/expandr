@@ -5,6 +5,7 @@
 expand_expression <- function(expr, expa_list) {
 
   expr <- deparse(expr, width.cutoff = 500L)
+  expressions <- expr
 
   for (pattern in names(expa_list)) {
 
@@ -12,11 +13,13 @@ expand_expression <- function(expr, expa_list) {
       # pattern not in expressions: do not do anything
       next
     }
-    expressions <- str_replace_all(expr, pattern = pattern,
-                                   replacement = expa_list[[pattern]])
+    expressions <- lapply(expressions, FUN = str_replace_all,
+                          pattern = pattern, replacement = expa_list[[pattern]])
 
-    return(expressions)
+    # convert list to character vector
+    expressions <- do.call(c, expressions)
   }
+  return(expressions)
 
   return(expr)
 }
@@ -56,7 +59,7 @@ handle_single_expression <- function(expr, expa_list, aggn_list) {
     expressions <- expand_expression(expr, expa_list)
     expressions <- lapply(expressions, FUN = function(x) {parse(text = x)})
   } else {
-    expressions <- expr
+    expressions <- as.expression(expr)
   }
   return(expressions)
 }
@@ -77,7 +80,7 @@ expansions <- function(x) {
   }
 
   # initialisation
-  expressions <- character(0)
+  expressions <- list()
   expa_list <- list()
   aggn_list <- list()
 
@@ -94,19 +97,19 @@ expansions <- function(x) {
   }
 
   for (i in 2 : length(x)) {
-    expr = x[[i]]
-    if (expr[[1]] == "@expa") {
+    expr <- x[[i]]
+    if (expr[[1]] == "expa") {
       handle_expand_expression(FALSE)
-    } else if (expr[[1]] == "@aggr") {
+    } else if (expr[[1]] == "aggr") {
       handle_expand_expression(TRUE)
     } else {
-      expressions <- c(expressions,
-                       handle_single_expression(expr, expa_list, aggn_list))
+      expr2 <- handle_single_expression(expr, expa_list, aggn_list)
+      expressions <- c(expressions, expr2)
+      # TODO: check the next line
+      if (length(expressions) == 1) expressions <- list(expressions)
     }
   }
 
-  # TODO: return the result as a list of expressions, instead of as a list
-  # of characters
   return(structure(expressions, class = "expansions"))
 }
 
