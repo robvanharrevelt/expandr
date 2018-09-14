@@ -33,13 +33,13 @@ handle_agg_expr <- function(x, aggn_list) {
       if (length(x) != 2) {
         stop("Incorrect number of argument in agg_expr")
       }
-      x <- expand_expression(x[[2]], aggn_list)
+      ret <- handle_agg_expr(x[[2]], aggn_list)
+      x <- expand_expression(ret, aggn_list)
       x <- paste(x, collapse = " + ")
       x <- paste0("(", x, ")")
-
       # convert the string a call tree
-      arg <- parse(text = x)[[1]]
-      return(handle_agg_expr(arg, aggn_list))
+      x <- parse(text = x)[[1]]
+      return(x)
     } else {
       # Otherwise apply recursively, turning result back into call
       return(as.call(lapply(x, handle_agg_expr, aggn_list)))
