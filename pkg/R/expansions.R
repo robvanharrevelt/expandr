@@ -3,62 +3,62 @@
 # evaluated in the order of the length of the symbols
 #' @importFrom stringr str_replace_all
 expand_expression <- function(expr, expa_list) {
-  expressions <- expr
+
+  expr <- deparse(expr, width.cutoff = 500L)
+
   for (pattern in names(expa_list)) {
 
-    if (length(grep(pattern, expressions)) == 0) {
+    if (length(grep(pattern, expr)) == 0) {
       # pattern not in expressions: do not do anything
       next
     }
-    expressions <- lapply(expressions, FUN = str_replace_all, pattern = pattern,
-                          replacement = expa_list[[pattern]])
+    expressions <- str_replace_all(expr, pattern = pattern,
+                                   replacement = expa_list[[pattern]])
 
-    # convert list to character vector
-    expressions <- do.call(what = c, args = expressions)
+    return(expressions)
   }
-  return (expressions)
+
+  return(expr)
 }
 
+handle_agg_expr <- function(x, aggn_list) {
+  if (is.atomic(x) || is.name(x)) {
+    # Leave unchanged
+    return(x)
+  } else if (is.call(x)) {
+    if (identical(x[[1]], quote(agg_expr))) {
+      if (length(x) != 2) {
+        stop("Incorrect number of argument in agg_expr")
+      }
+      x <- expand_expression(x[[2]], aggn_list)
+      x <- paste(x, collapse = " + ")
+      x <- paste0("(", x, ")")
 
-
-# returns a valid pattern(s) for regular expressions for a normal
-# character vector x by escaping characters when necessary
-create_pattern <- function(x) {
-  return(str_replace_all(x, pattern = "([({)}+*\\[\\]\\\\])",
-                         replacement = "\\\\\\1"))
-}
-
-get_summation <- function(x, aggn_list) {
-  x <- expand_expression(x, aggn_list)
-  return(paste(x, collapse = " + "))
-}
-
-#' @importFrom stringr str_match_all
-perform_aggregation <- function(expr, aggn_list) {
-  matches <- str_match_all(expr, pattern  = "\"\\{(.+?)\\}\"")
-  groups <- matches[[1]][, 2]
-  if (length(groups) == 0) {
-    return (expr)
+      # convert the string a call tree
+      arg <- parse(text = x)[[1]]
+      return(handle_agg_expr(arg, aggn_list))
+    } else {
+      # Otherwise apply recursively, turning result back into call
+      return(as.call(lapply(x, handle_agg_expr, aggn_list)))
+    }
+  } else {
+    # User supplied incorrect input
+    stop("Don't know how to handle type ", typeof(x),
+         call. = FALSE)
   }
-  patterns <- create_pattern(groups)
-  replacements <- lapply(groups, FUN = get_summation, aggn_list = aggn_list)
-  replacements <- paste0("(", as.character(replacements), ")")
-  pattern_list <- replacements
-  names(pattern_list) <- paste0("\"\\{", patterns, "\\}\"")
-  expr <- str_replace_all(expr, pattern_list)
-  return (expr)
 }
 
 handle_single_expression <- function(expr, expa_list, aggn_list) {
   if (length(aggn_list) > 0) {
-    expr <- perform_aggregation(expr, aggn_list)
+    expr <- handle_agg_expr(expr, aggn_list)
   }
   if (length(expa_list) > 0) {
     expressions <- expand_expression(expr, expa_list)
+    expressions <- lapply(expressions, FUN = function(x) {parse(text = x)})
   } else {
     expressions <- expr
   }
-  return (expressions)
+  return(expressions)
 }
 
 #' Expand R expressions with and without aggregation
@@ -66,14 +66,14 @@ handle_single_expression <- function(expr, expa_list, aggn_list) {
 #'
 #' @export
 expansions <- function(x) {
+
   x <- substitute(x)
 
   pf <- parent.frame()
 
   if (x[[1]] != "{") {
-    # expressions is a single expression. There is nothing
-    # to expand
-    return (deparse(expressions, width.cutoff = 500))
+    # expressions is a single expression. There is nothing to expand
+    return(deparse(expressions, width.cutoff = 500))
   }
 
   # initialisation
@@ -100,12 +100,14 @@ expansions <- function(x) {
     } else if (expr[[1]] == "@aggr") {
       handle_expand_expression(TRUE)
     } else {
-      expr <- deparse(expr, width.cutoff = 500L)
       expressions <- c(expressions,
                        handle_single_expression(expr, expa_list, aggn_list))
     }
   }
-  return (structure(expressions, class = "expansions"))
+
+  # TODO: return the result as a list of expressions, instead of as a list
+  # of characters
+  return(structure(expressions, class = "expansions"))
 }
 
 #' @export
@@ -122,7 +124,7 @@ print.expansions <- function(x, ...) {
 eval_expa <- function(expa) {
   pf <- parent.frame()
   evaluate_expr <- function(expr) {
-    return (eval(parse(text = expr), envir = pf))
+    return(eval(parse(text = expr), envir = pf))
   }
   x <- lapply(expa, FUN = evaluate_expr)
   return (invisible(NULL))

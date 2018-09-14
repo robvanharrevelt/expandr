@@ -6,7 +6,7 @@ print(df)
 
 expa <- expansions({
     "@aggr"(G = c("m", "v"))
-    zh_t_2064 <- "{zh_G_2064}" + "{sin(nh_G_2064) + 1}"
+    zh_t_2064 <- agg_expr(zh_G_2064) + agg_expr(sin(nh_G_2064) + 1)
 })
 print(expa)
 

@@ -9,4 +9,4 @@ df <- data.frame(nh_m_2064 = rep(10,2),
 rownames(df) <- c("2010", "2011")
 print(df)
 
-save(df, file = "examples/data.Rdata")
+save(df, file = "pkg/examples/data.Rdata")

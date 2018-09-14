@@ -21,13 +21,13 @@ expa <- expansions({
   # bereken eerst detotlem
   "@expa"(L = get_leeftijdscategorieen(0, 99))
   "@aggr"(G = c("m", "v"))
-  bv__t_L <- "{bv__G_L}"
+  bv__t_L <- agg_expr(bv__G_L)
 
   "@expa"(G = c("m", "v", "t"))
   "@aggr"(A = get_leeftijdscategorieen(15, 64))
-  bv__G_1564 <- "{bv__G_A}"
+  bv__G_1564 <- agg_expr(bv__G_A)
   "@aggr"(A = get_leeftijdscategorieen(65, 99))
-  bv__G_6599 <- "{bv__G_A}"
+  bv__G_6599 <- agg_expr(bv__G_A)
 
   bv__G_1574 <- bv__G_1564 + bv__G_6569 + bv__G_7074
   bv__G_1599 <- bv__G_1564 + bv__G_6599
