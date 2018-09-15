@@ -1,6 +1,6 @@
 library(expandr)
 
-load("examples/data.Rdata")
+load("data.Rdata")
 
 expa <- expansions({
   expa(G = c("m", "v"))
@@ -11,5 +11,5 @@ expa <- expansions({
 print(expa)
 
 print(df)
-df2 <- eval_expa_within(code, df)
+df2 <- eval_expa_within(expa, df)
 print(df2)

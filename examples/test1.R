@@ -1,6 +1,6 @@
 library(expandr)
 
-load("examples/data.Rdata")
+load("data.Rdata")
 
 z <- 888
 expa <- expansions({

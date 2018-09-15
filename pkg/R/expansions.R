@@ -59,7 +59,7 @@ handle_single_expression <- function(expr, expa_list, aggn_list) {
     expressions <- expand_expression(expr, expa_list)
     expressions <- lapply(expressions, FUN = function(x) {parse(text = x)})
   } else {
-    expressions <- as.expression(expr)
+    expressions <- list(as.expression(expr))
   }
   return(expressions)
 }
@@ -103,10 +103,8 @@ expansions <- function(x) {
     } else if (expr[[1]] == "aggr") {
       handle_expand_expression(TRUE)
     } else {
-      expr2 <- handle_single_expression(expr, expa_list, aggn_list)
-      expressions <- c(expressions, expr2)
-      # TODO: check the next line
-      if (length(expressions) == 1) expressions <- list(expressions)
+      expressions <- c(expressions,
+                       handle_single_expression(expr, expa_list, aggn_list))
     }
   }
 

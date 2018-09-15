@@ -13,6 +13,6 @@ Description: This package can be used to expand R expressions.
    It is an R equivalent of the program Presim.
 License: GPL-3
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Imports: stringr, regts
 Suggests: testthat
